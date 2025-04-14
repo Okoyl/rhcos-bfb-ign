@@ -252,7 +252,17 @@ WantedBy=sysinit.target"""
   )
 ]
 
+def octal_to_decimal(num: int) -> int:
+  """
+  Converts an integer interpreted as octal to its decimal equivalent.
 
+  Args:
+    num (int): The integer representing an octal number.
+
+  Returns:
+    int: The decimal equivalent of the octal number.
+  """
+  return int(str(num), 8)
 
 def pull_ignition_file() -> bool:
   """
@@ -346,7 +356,7 @@ def add_files(ign: dict) -> None:
     ign['storage']['files'].append({
       'path': file.path,
       'overwrite': file.overwrite,
-      'mode': file.mode,
+      'mode': octal_to_decimal(file.mode),
       'contents': {
         'source': file.contents.source
       }
@@ -357,7 +367,7 @@ def add_files(ign: dict) -> None:
     ign['storage']['files'].append({
       'path': file.path,
       'overwrite': file.overwrite,
-      'mode': file.mode,
+      'mode': octal_to_decimal(file.mode),
       'contents': {
         'source': "data:text/plain;charset=utf-8;base64," + base64.b64encode(file.contents.inline.encode()).decode()
       }
